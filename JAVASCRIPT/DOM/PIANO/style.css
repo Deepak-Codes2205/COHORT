@@ -1,0 +1,52 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background: #111;
+  color: #fff;
+}
+
+.piano {
+  position: relative;
+  width: 590px;
+  height: 220px;
+  margin: 40px auto;
+}
+
+.key {
+  cursor: pointer;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  font-weight: bold;
+  user-select: none;
+}
+
+.white {
+  width: 80px;
+  height: 220px;
+  background: #fff;
+  color: #000;
+  border: 1px solid #000;
+  float: left;
+}
+
+.black {
+  width: 50px;
+  height: 140px;
+  background: #000;
+  color: #fff;
+  position: absolute;
+  margin-left: -25px;
+  z-index: 2;
+}
+
+/* Position black keys */
+.black[data-note="Cs"] { left: 60px; }
+.black[data-note="Ds"] { left: 140px; }
+.black[data-note="Fs"] { left: 300px; }
+.black[data-note="Gs"] { left: 380px; }
+.black[data-note="As"] { left: 460px; }
+
+.key.active {
+  background: orange !important;
+}

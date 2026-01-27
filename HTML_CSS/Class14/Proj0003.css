@@ -1,0 +1,90 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+html,body{
+    width: 100%;
+    height: 100%;
+}
+
+.main{
+    width: 100%;
+    height: 100%;
+    font-family: SF Pro Text, SF Pro Icons, Helvetica Neue, Helvetica, Arial, sans-serif;
+
+}
+.nav{
+    width: 100%;
+    height: 45px;
+    background-color: rgb(48, 45, 45);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap:45px;
+}
+.nav a{
+    text-decoration: none;
+    color: white;
+    font-size:12px;
+    font-weight: 100;
+}
+
+.nav i{
+    font-size: 18px;
+    color: white;
+}
+.content_area{
+    width: 100%;
+    height: 93.9%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.5%;
+    gap:12px;
+    text-align:center;
+}
+
+.content_area i{
+    font-size:42px;
+}
+.content1{
+    width:49.3%;
+    height:99%;
+    padding:70px;
+    background-image: url(./promo_airpodspro_3.jpg);
+    background-size: cover;
+}
+.content2{
+    width:49.3%;
+    height:99%;
+    background-image: url(./promo_apple_watch_series_11.jpg);
+    background-size: cover;
+    background-position:bottom;
+    padding:70px;
+}
+h1{
+    font-size:45px;
+    font-weight: 600;
+    padding-bottom:10px;  
+}
+h4{
+    font-size:21px;
+    font-weight: 300;   
+}
+.links{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding:25px;
+    gap:10px;
+}
+
+button{
+    padding:9px 20px;
+    font-size:14px;
+    font-weight:300;
+    border-radius: 50px;
+    border:none;
+}
+ 

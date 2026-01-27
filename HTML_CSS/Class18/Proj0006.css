@@ -1,0 +1,101 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    box-sizing: border-box;
+}
+html,body{
+    width: 100%;
+    height: 100%;
+}
+
+main{
+    width:100%;
+    height: 100%;
+    background-color: black;
+    padding:20px;
+    gap:20px;
+    text-align: center;
+    display: grid;
+    grid-template-columns: 230px 1fr 1fr 1fr;
+    grid-template-rows: 60px 1fr 1fr;
+    grid-template-areas: "header header header header"
+                         "aside section1 section2 section3"
+                         "aside div1 div2 div3";
+
+}
+
+header{
+    background-color: brown;
+    grid-area: header;
+    display: flex;
+    align-items: center;
+}
+
+aside{
+    background-color: blueviolet;
+    grid-area: aside;
+}
+section1{
+    background-color: blue;
+    grid-area: section1;
+}
+section2{
+    background-color: rgb(129, 142, 234);
+    grid-area: section2;
+}
+section3{
+    background-color: rgb(85, 224, 206);
+    grid-area: section3;
+}
+#div1{
+    background-color: aqua;
+    grid-area: div1;
+}
+#div2{
+    background-color: rgb(223, 42, 163);
+    grid-area: div2;
+}
+#div3{
+    background-color: rgb(70, 71, 71);
+    grid-area: div3;
+}
+
+.nav1{
+    height:100%;
+    width:25%;
+    background-color: aqua;
+    display: flex;
+    align-items: center;
+    gap:30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.nav1 i{
+    font-size:28px;
+}
+.nav2{
+    height:100%;
+    width:45%;
+    background-color: rgb(61, 238, 105);
+    display: flex;
+    align-items: center;
+    gap:30px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+.nav2 i{
+    font-size:23px;
+    color:white;
+    margin-left:-80px;
+    font-weight:100;
+}
+
+.nav2 input[type="text"]{
+    width:80%;
+    height:42px;
+    border-radius: 20px;
+    border:1px solid rgb(238, 235, 235);
+    padding-left:20px;
+    font-size:16px;
+    font-weight: 500;
+    background-color: rgb(34, 33, 33);
+}
+

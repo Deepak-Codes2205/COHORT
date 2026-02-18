@@ -8,7 +8,6 @@ const noteSchema = new mongoose.Schema({
 })
 
 //Model
-
 const noteModel = mongoose.model("notes",noteSchema)
 
 module.exports = noteModel

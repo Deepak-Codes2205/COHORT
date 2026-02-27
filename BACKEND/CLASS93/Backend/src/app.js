@@ -32,10 +32,10 @@ fetch all the data from mongodb and send them in response */
 
 app.get('/api/notes', async (req,res)=>{
 
-    const note = await noteModel.find()
+    const notes = await noteModel.find()
     res.status(200).json({
         message:"Notes fetched succesfully.",
-        note
+        notes
     })
 })
 
@@ -50,7 +50,6 @@ app.delete('/api/notes/:id', async (req,res)=>{
         message:"Note deleted successfully."
     })
 })
-
 
 /**
  * - PATCH /api/notes/:id

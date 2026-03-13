@@ -1,9 +1,10 @@
 const express = require("express")
-const crypto = require("crypto")
+const bcrypt = require("bcryptjs")
+const userModel = require("../models/user.models")
 const authRouter = express.Router()
 const jwt = require("jsonwebtoken")
 
-async function loginController(req,res){
+async function  registerController(req,res){
     const{username, email, password, bio, profileImage} = req.body
 
     //CHECKING WHETHER THE EMAIL OR USERNAME DOES EXISTS ALREADY
@@ -20,7 +21,7 @@ async function loginController(req,res){
         })
     }
     //HASHING PASSWORD
-    const hash = crypto.createHash('sha256').update(password).digest('hex')
+    const hash = await bcrypt.hash(password, 10)
 
     const user = await userModel.create({
         username,
@@ -52,7 +53,7 @@ async function loginController(req,res){
 
 }
 
-async function registerController(req,res){
+async function loginController(req,res){
     const {username,email,password} = req.body
 
     /* CAN LOGIN ON THE BASIS OF EITHER
@@ -75,20 +76,22 @@ async function registerController(req,res){
             message: "User Not Found"
         })
     }
-    const hash = crypto.createHash('sha256').update(password).digest('hex')
+    
+    const isPasswordValid = await bcrypt.compare(password,user.password )
      
-    const isValidPassword = hash === user.password
-
-    if(!isValidPassword){
+    if(!isPasswordValid){
         return res.status(401).json({
             message: "Incorrect Password"
         })
     }
     const token = jwt.sign(
-        { id: user._id},
-        process.env.JWT_SECRET,{expiresIn:"1d"}
+        { 
+            id: user._id
+        },process.env.JWT_SECRET,{expiresIn:"1d"}
     )
+
     res.cookie("token",token)
+    
     res.status(201).json({
         message: "User Loggined Successfully",
         user: {

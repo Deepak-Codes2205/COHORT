@@ -3,26 +3,33 @@ const postRouter = express.Router()
 const userModel = require("../models/user.models")
 const postController = require('../controllers/post.controller')
 const multer = require('multer')
-
+const identifyUser = require("../middlewares/auth.middleware")
 const upload = multer({ storage:multer.memoryStorage() })
 
-/**  
- * /api/post/   
+/** 
+ * @route POST/api/post [protected] 
+ * @description Create a post with the content and image (optional) provided in the request body. The post should be associated with the user that the request come from  
 */
-postRouter.post("/", upload.single("Image"),postController.createPostController)
+postRouter.post("/", upload.single("Image"), identifyUser, postController.createPostController)
 
 
-/* GET
-    /api/post   [protected] RETURNS ALL POSTS OF A USER
-*/
-postRouter.get("/", postController.getPostController)
+/**
+ * @route GET /api/post/ [protected]
+ * @description Get all the posts created by the user that the request come from. also return the total number of posts created by the user
+ */
+postRouter.get("/", identifyUser, postController.getPostController)
 
 
-/* GET - /api/post/details/:postId  
-RETURNS A DETAIL ABOUT SPECIFIC POST WITH THE ID , ALSO CHECKS WHETHER THE POST BELONGS TO THE USER THAT IS REQUESTING OR NOT 
-*/
-postRouter.get("/details/:postId", postController.getPostDetailController)
+/**
+ * @route GET /api/post/details/:postid
+ * @description return an detail about specific post with the id. also check whether the post belongs to the user that the request come from
+ */
+postRouter.get("/details/:postId", identifyUser, postController.getPostDetailController)
 
-
+/** 
+ * @route POST/api/post/like/:postid
+ * @description like a post with the id provided in the request params.
+ */
+postRouter.post('/like/:postId', identifyUser, postController.likePostController)
 
 module.exports = postRouter

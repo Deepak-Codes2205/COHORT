@@ -35,7 +35,6 @@ async function createPostController(req,res){
 /* GET
     /api/post   [protected] RETURNS ALL POSTS OF A USER
 */
-
 async function getPostController(req,res){
 
     const token = req.cookies.token
@@ -84,8 +83,9 @@ async function  getPostDetailController(req,res){
 }
 
 
-/*
-*/
+/**
+ * Like a post
+**/
 async function likePostController(req,res) {
     const username = req.user.username
     const postId = req.params.postId
@@ -107,9 +107,73 @@ async function likePostController(req,res) {
     })
 
 }
+
+
+/**
+ * Unlike a post
+**/
+async function unlikePostController(req,res) {
+
+    const username = req.user.username
+    const postId = req.params.postId
+
+    const isLiked = await likeModel.findOne({
+        post: postId,
+        user: username
+    })
+
+    if(!isLiked){
+        return res.status(400).json({
+            message: "Post not Liked"
+        })
+    }
+
+    await likeModel.findOneAndDelete({
+        _id: isLiked._id
+    })
+
+    res.status(201).json({
+        message: "Post Unliked Successfully"
+    })
+
+}
+
+/**
+ * GET - api/post/feed
+ */
+async function getFeedController(req,res) {
+
+    /** The populate() method provides all the information about the thing that we search inside it
+    * but the schema must have user with ref :"users" (users is a database)
+    * */
+    const user = req.user
+    const posts = await Promise.all((await postModel.find().sort({ _id:-1 }).populate("user").lean())
+        .map(async (post) => {
+            /**
+             * typeOf post : mongooseObject (mongooseObject does not allow to add new properties)
+             * To convert this moongooseObject to  Normal Object we use .lean() function now we can add new
+             * properties such as post.isLiked = isLiked in this case   
+             */
+            const isLiked = await likeModel.findOne({
+                user: user.username,
+                post: post._id,
+            })
+            post.isLiked = Boolean(isLiked)
+
+            return post
+        }))
+
+    res.status(200).json({
+        message: "Posts fetched Succesfully.",
+        posts
+    })
+}
+
 module.exports = {
     createPostController,
     getPostController,
     getPostDetailController,
-    likePostController
+    likePostController,
+    getFeedController,
+    unlikePostController
 }

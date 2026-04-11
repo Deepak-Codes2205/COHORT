@@ -71,7 +71,8 @@ async function loginController(req,res){
                 email: email /* undefined */ //or vice versa
             }
         ]
-    })
+    }).select("+password")
+    
     if(!user){
         return res.status(401).json({
             message: "User Not Found"
@@ -105,7 +106,23 @@ async function loginController(req,res){
     })
 }
 
+async function getMeController(req,res){
+
+    const userId = req.user.id
+    const user = await userModel.findById(userId)
+
+    res.status(201).json({
+        username: user.username,
+        email: user.email,
+        bio: user.bio,
+        profileImage: user.profileImage
+
+    })
+}
+
+
 module.exports = {
     registerController,
-    loginController
+    loginController,
+    getMeController
 }

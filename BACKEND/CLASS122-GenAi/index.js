@@ -2,9 +2,29 @@ import "dotenv/config"
 //Used to read line from the terminal
 import readline from "readline/promises";
 
-// Used to create a chat model for MistralAI and to create human messages
-import { ChatMistralAI } from "@langchain/mistralai";
-import { HumanMessage } from "langchain";
+
+import { ChatMistralAI } from "@langchain/mistralai";     // Used to create a chat model for MistralAI and to create human messages
+import { HumanMessage } from "@langchain/core/messages";  //import { HumanMessage } from "langchain";
+import { tool } from "@langchain/core/tools";
+import { createAgent } from "langchain";
+import * as z from "zod"
+import { sendEmail }from "./mail.service.js";
+
+
+const emailTool = tool(
+    
+    sendEmail,
+    {
+        name: "emailTool",
+        description: "Use this tool to send an email.",
+        schema: z.object({
+            to: z.string().describe("The email address of the recipient"),
+            subject: z.string().describe("The subject of the email"),
+            html: z.string().describe("The HTML content of the email")
+        })
+    }
+)
+
 
 
 // this rl is used to read input from the terminal and output to the terminal, 
@@ -21,6 +41,11 @@ const model = new ChatMistralAI({
     apiKey: process.env.MISTRAL_API_KEY
 })
 
+const agent = createAgent({
+    model, 
+    tools: [emailTool]
+})
+
 //Empty array to store the conversation history between the user and the AI model. 
 // Each message will be stored as an instance of HumanMessage or the response from the model.
 const messages = []
@@ -32,11 +57,16 @@ while (true) {
 
     messages.push(new HumanMessage(userInput))
     
-    const response = await model.invoke(messages)
+    const response = await agent.invoke({
+        messages
+    })
 
-    messages.push(response)
+    messages.push(response.messages[response.messages.length - 1])
+    console.log(response)
 
-    console.log(`\x1b[34m[AI]\x1b[0m ${response.content}`)
+    //console.log(response.messages[response.messages.length - 1].text) :- Used to Print only the text response from the model, without any additional information or formatting.
+    
+    //console.log(`\x1b[34m[AI]\x1b[0m ${response.content}`)
 }
 
 

@@ -62,10 +62,10 @@ while (true) {
     })
 
     messages.push(response.messages[response.messages.length - 1])
-    console.log(response)
+     console.log(response)
 
     //console.log(response.messages[response.messages.length - 1].text) :- Used to Print only the text response from the model, without any additional information or formatting.
-    
+     
     //console.log(`\x1b[34m[AI]\x1b[0m ${response.content}`)
 }
 

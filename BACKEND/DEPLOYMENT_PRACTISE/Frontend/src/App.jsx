@@ -1,10 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import axios from "axios"
-import { useEffect } from 'react'
 import React from 'react'
 import ReactDOM from 'react-dom'
 
-
+ 
 function App() {
   const[notes, setNotes] = useState([])
 
@@ -14,6 +13,7 @@ function App() {
     setNotes(res.data.notes) 
     })
   }
+
   useEffect(()=>{
     fetchNotes()
   },[])
@@ -25,11 +25,10 @@ function App() {
     console.log(title.value, description.value)
 
     axios.post("http://localhost:3000/api/notes",
-      {
-        title: title.value,
-        description: description.value
-      }
-    ).then(res=>{
+    {
+      title: title.value,
+      description: description.value
+    }).then(res=>{
       console.log(res.data)
       fetchNotes()
     })
@@ -58,7 +57,10 @@ function App() {
             return <div className="note" key={note._id}>
               <h1>{note.title}</h1>
               <p>{note.description}</p>
+
               <button onClick={()=>{handleDeleteNote(note._id)}}>Delete</button>
+            
+
             </div>
           })
       }

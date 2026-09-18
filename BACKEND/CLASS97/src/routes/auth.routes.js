@@ -9,9 +9,11 @@ authRouter.post('/register', async(req,res)=>{
 
     //REGISTERING USER
     //CHECKING WHETHER A USERS ALREADY EXIST WITH THE SIMILAR EMAIL ADDRESS 
+    // Use 409 when the request is otherwise valid, but cannot be completed because it conflicts with existing data.
+    // Use 400 when the request is invalid or malformed, such as missing required fields or invalid data types.
     const isUserAlreadyExsits = await userModel.findOne({email})
     if(isUserAlreadyExsits){
-        return res.status(400).json({
+        return res.status(409).json({
             message: "User already exists with this email address"
         })
     }
